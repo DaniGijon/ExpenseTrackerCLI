@@ -5,11 +5,17 @@ import entities.Expense;
 
 public class ExpenseTrackerCLI {
 	
+	private static ExpenseTrackerController etc = new ExpenseTrackerController();
+	
 	public static void main (String args []) {
-		ExpenseTrackerController etc = new ExpenseTrackerController();
+		etc.addExpense("screen", 285.99);
+		etc.addExpense("onion", 0.80);
 		etc.list();
 		etc.summary();
-		etc.summaryByMonth(4);
-		etc.updateExpense(2, "balon", 23.00);
+		etc.deleteExpense(1);
+		etc.updateExpense(1, "life", 1000.00);
+		etc.list();
+		etc.summary();
+		etc.summaryByMonth(20);
 	}
 }
