@@ -9,12 +9,14 @@ public class Expense {
 	private String description;
 	private double amount;
 	private LocalDate createdAt;
+	private LocalDate modifiedAt;
 	
 	public Expense (String description, double amount) {
 		this.id = ++lastId;
 		this.description = description;
 		this.amount = amount;
 		createdAt = LocalDate.now();
+		modifiedAt = LocalDate.now();
 	}
 	
 	public int getId() {
@@ -41,6 +43,11 @@ public class Expense {
 	public void setCreatedAt(LocalDate createdAt) {
 		this.createdAt = createdAt;
 	}
-	
+	public LocalDate getModifiedAt() {
+		return modifiedAt;
+	}
+	public void setModifiedAt(LocalDate modifiedAt) {
+		this.modifiedAt = modifiedAt;
+	}
 	
 }
