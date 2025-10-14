@@ -48,6 +48,28 @@ public class ExpenseTrackerController {
 		return storedExpenses;
 	}
 	
+	public void saveExpenses () {
+		if (listExpenses.size() > 0) {
+	        StringBuilder sb = new StringBuilder();
+	        sb.append("[\n");
+	        for (int i = 0; i < listExpenses.size(); i++){
+	            sb.append(expenseToJSON(listExpenses.get(i)));
+	            if (i < listExpenses.size() - 1){
+	                sb.append(",\n");
+	            }
+	        }
+	        sb.append("\n]");
+
+	        String jsonContent = sb.toString();
+	        try {
+	            Files.writeString(FILE_PATH, jsonContent);
+	        } catch (IOException e){
+	            e.printStackTrace();
+	        }
+		    
+		}
+	}
+	
 	public void addExpense (String description, double amount) {
 		Expense expense = new Expense (++lastId, description, amount);
 		listExpenses.add(expense);
@@ -160,4 +182,9 @@ public class ExpenseTrackerController {
         return expense;
 	    
 	}
+	
+	public String expenseToJSON(Expense expense) {
+        return "{\"id\":\"" + expense.getId() + "\", \"description\":\"" + expense.getDescription().strip() + "\", \"amount\":\"" + String.valueOf(expense.getAmount()) +
+                "\", \"createdAt\":\"" + expense.getCreatedAt().format(formatter) + "\", \"modifiedAt\":\"" + expense.getModifiedAt().format(formatter) + "\"}";
+    }
 }

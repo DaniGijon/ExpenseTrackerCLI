@@ -82,8 +82,8 @@ public class ExpenseTrackerCLI {
 		    			}
 		    			break;
 			    }
+		    etc.saveExpenses();
 		    }
-		    
 	    }
 	}
 }
