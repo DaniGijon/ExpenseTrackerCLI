@@ -20,6 +20,7 @@ public class ExpenseTrackerController {
 	
 	public ExpenseTrackerController () {
 		listExpenses = loadExpenses();
+		lastId = listExpenses.size();
 	}
 	
 	private List <Expense> loadExpenses () {
