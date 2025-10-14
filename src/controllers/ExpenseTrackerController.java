@@ -7,10 +7,11 @@ import entities.Expense;
 
 public class ExpenseTrackerController {
 	
+	private int lastId = 0;
 	List<Expense> listExpenses = new ArrayList<>();
 	
 	public void addExpense (String description, double amount) {
-		Expense expense = new Expense (description, amount);
+		Expense expense = new Expense (++lastId, description, amount);
 		listExpenses.add(expense);
 		System.out.println("New expense added (ID:" + expense.getId() + ")");
 	}

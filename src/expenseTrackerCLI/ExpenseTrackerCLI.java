@@ -3,7 +3,6 @@ package expenseTrackerCLI;
 import java.util.Scanner;
 
 import controllers.ExpenseTrackerController;
-import entities.Expense;
 
 public class ExpenseTrackerCLI {
 	

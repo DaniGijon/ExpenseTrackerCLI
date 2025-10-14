@@ -4,15 +4,14 @@ import java.time.LocalDate;
 
 public class Expense {
 
-	private int lastId = 0;
 	private int id;
 	private String description;
 	private double amount;
 	private LocalDate createdAt;
 	private LocalDate modifiedAt;
 	
-	public Expense (String description, double amount) {
-		this.id = ++lastId;
+	public Expense (int id, String description, double amount) {
+		this.id = id;
 		this.description = description;
 		this.amount = amount;
 		createdAt = LocalDate.now();
