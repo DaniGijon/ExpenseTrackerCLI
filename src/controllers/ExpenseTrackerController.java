@@ -1,5 +1,10 @@
 package controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,8 +12,40 @@ import entities.Expense;
 
 public class ExpenseTrackerController {
 	
+	private static final Path FILE_PATH = Path.of("expensesJSON.json");
+	private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+	
 	private int lastId = 0;
-	List<Expense> listExpenses = new ArrayList<>();
+	private List<Expense> listExpenses = new ArrayList<>();
+	
+	public ExpenseTrackerController () {
+		listExpenses = loadExpenses();
+	}
+	
+	private List <Expense> loadExpenses () {
+		List<Expense> storedExpenses = new ArrayList<>();
+		
+		if (Files.exists(FILE_PATH)){
+			try {
+	            String jsonContent = Files.readString(FILE_PATH);
+	            String[] expenseList = jsonContent.replace("[", "")
+	                                            .replace("]", "")
+	                                            .split("},");
+	            for (String expenseJson : expenseList){
+	                if (!expenseJson.endsWith("}")){
+	                	expenseJson = expenseJson + "}";
+	                    storedExpenses.add(expenseFromJSON(expenseJson));
+	                } else {
+	                	storedExpenses.add(expenseFromJSON(expenseJson));
+	                }
+	            }
+	        } catch (IOException e){
+	            e.printStackTrace();
+	        }
+        }
+		
+		return storedExpenses;
+	}
 	
 	public void addExpense (String description, double amount) {
 		Expense expense = new Expense (++lastId, description, amount);
@@ -49,6 +86,7 @@ public class ExpenseTrackerController {
 			if (expense.getId() == id) {
 				expense.setDescription(description);
 				expense.setAmount(amount);
+				expense.setModifiedAt(LocalDateTime.now());
 				System.out.println("Expense updated successfully (ID:" + expense.getId() + ")");
 				break;
 			}
@@ -101,5 +139,24 @@ public class ExpenseTrackerController {
 			default:
 				return "MONTH NOT EXIST";
 		}
+	}
+	
+	private Expense expenseFromJSON (String expenseJSON) {
+		expenseJSON = expenseJSON.replace("{", "").replace("}", "").replace("\"", "");
+        String[] json1 = expenseJSON.split(",");
+
+        String id = json1[0].split(":")[1].strip();
+        String description = json1[1].split(":")[1].strip();
+        String amountStr = json1[2].split(":")[1].strip();
+        String createdAtStr = json1[3].split("[a-z]:")[1].strip();
+        String modifiedAtStr = json1[4].split("[a-z]:")[1].strip();
+
+        Expense expense = new Expense(Integer.valueOf(id), description, Double.valueOf(amountStr));
+  
+        expense.setCreatedAt(LocalDateTime.parse(createdAtStr, formatter));
+        expense.setModifiedAt(LocalDateTime.parse(modifiedAtStr, formatter));
+
+        return expense;
+	    
 	}
 }
