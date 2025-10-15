@@ -37,7 +37,7 @@ output: Budget limit for OCTOBER updated: 600.0
 
 export <filename>
 example: export exit
-output: export to a new file named exit.csvBudget limit for OCTOBER updated: 600.0
+output: export to a new file named exit.csv
 
 quit
 example: quit
