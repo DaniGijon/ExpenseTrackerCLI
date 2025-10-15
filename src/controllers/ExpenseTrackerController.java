@@ -22,7 +22,7 @@ public class ExpenseTrackerController {
 	
 	public ExpenseTrackerController () {
 		listExpenses = loadExpenses();
-		lastId = listExpenses.size();
+		lastId = listExpenses.getLast().getId();
 	}
 	
 	private List <Expense> loadExpenses () {
@@ -81,11 +81,16 @@ public class ExpenseTrackerController {
 	}
 	
 	public void list () {
-		for (Expense expense : listExpenses) {
-			System.out.println("(ID:" + expense.getId() + ") - " + expense.getDescription() + " [" + expense.getCategory() + "] costs " +
-					expense.getAmount() + " €. Created at " + expense.getCreatedAt() + 
-					" . Modified at " + expense.getModifiedAt() + ".");
+		if (listExpenses.size() > 0) {
+			for (Expense expense : listExpenses) {
+				System.out.println("(ID:" + expense.getId() + ") - " + expense.getDescription() + " [" + expense.getCategory() + "] costs " +
+						expense.getAmount() + " €. Created at " + expense.getCreatedAt() + 
+						" . Modified at " + expense.getModifiedAt() + ".");
+			}
+		} else {
+			System.out.println("No expenses found.");
 		}
+		
 	}
 	
 	public void summary () {
