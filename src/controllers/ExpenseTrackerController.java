@@ -97,19 +97,25 @@ public class ExpenseTrackerController {
 	}
 	
 	public void deleteExpense (int id) {
+		boolean idFound = false;
 		int i = 0;
 		for (Expense expense : listExpenses) {
 			if (expense.getId() == id) {
 				listExpenses.remove(i);
 				System.out.println("Expense deleted successfully (ID:" + expense.getId() + ")");
+				idFound = true;
 				break;
 			}
 			i++;
+		}
+		if (!idFound) {
+			System.out.println("ERROR: ID not found");
 		}
 	}
 	
 	public void updateExpense (int id, String description, double amount, String category, Budget budget) {
 		
+		boolean idFound = false;
 		for (Expense expense : listExpenses) {
 			if (expense.getId() == id) {
 				double alreadySpent = getAlreadySpent(expense.getCreatedAt().getMonthValue());
@@ -120,10 +126,13 @@ public class ExpenseTrackerController {
 				expense.setModifiedAt(LocalDateTime.now());
 				expense.setCategory(category);
 				System.out.println("Expense updated successfully (ID:" + expense.getId() + ")");
-				
+				idFound = true;
 				break;
 			}
 		}	
+		if (!idFound) {
+			System.out.println("ERROR: ID not found");
+		}
 	}
 	
 	public void summaryByMonthAndByCategory(int month, String category) {

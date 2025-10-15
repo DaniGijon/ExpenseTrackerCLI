@@ -25,20 +25,24 @@ public class ExpenseTrackerCLI {
 		    		case "add":
 		    			if (arguments.length > 4) {
 		    				String description = "";
-			    			String amount = "0";
+		    				double amount = 0;
 			    			String category = "";
 			    			for (int i = 1; i < arguments.length - 1; i++) {
 			    				if (arguments[i].equals("--description")) {
 			    					description = arguments [i+1];
 			    				}
 			    				if (arguments[i].equals("--amount")) {
-			    					amount = arguments [i+1];
+			    					amount = Double.valueOf(arguments [i+1]);
 			    				}
 			    				if (arguments[i].equals("--category")) {
 			    					category = arguments [i+1];
 			    				}
 			    			}
-			    			etc.addExpense(description, Double.valueOf(amount), category, budget);
+			    			if (amount >= 0) {
+			    				etc.addExpense(description, amount, category, budget);
+		    				} else {
+		    					System.out.println("ERROR. Amount must be a positive value.");
+		    				}
 		    			}
 		    			break;
 		    		case "delete":
@@ -72,7 +76,12 @@ public class ExpenseTrackerCLI {
 			    					category = arguments [i+1];
 			    				}
 			    			}
-			    			etc.updateExpense(id, description, amount, category, budget);
+		    				if (amount >= 0) {
+		    					etc.updateExpense(id, description, amount, category, budget);
+		    				} else {
+		    					System.out.println("ERROR. Amount must be a positive value.");
+		    				}
+			    			
 		    			}
 		    			break;
 		    		case "list":
