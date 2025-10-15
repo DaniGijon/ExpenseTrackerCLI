@@ -70,17 +70,17 @@ public class ExpenseTrackerController {
 		}
 	}
 	
-	public void addExpense (String description, double amount) {
-		Expense expense = new Expense (++lastId, description, amount);
+	public void addExpense (String description, double amount, String category) {
+		Expense expense = new Expense (++lastId, description, amount, category);
 		listExpenses.add(expense);
 		System.out.println("New expense added (ID:" + expense.getId() + ")");
 	}
 	
 	public void list () {
 		for (Expense expense : listExpenses) {
-			System.out.println("(ID:" + expense.getId() + ") - " + expense.getDescription() + " costs " +
+			System.out.println("(ID:" + expense.getId() + ") - " + expense.getDescription() + " [" + expense.getCategory() + "] costs " +
 					expense.getAmount() + " €. Created at " + expense.getCreatedAt() + 
-					" . Modified at " + expense.getModifiedAt());
+					" . Modified at " + expense.getModifiedAt() + ".");
 		}
 	}
 	
@@ -104,20 +104,21 @@ public class ExpenseTrackerController {
 		}
 	}
 	
-	public void updateExpense (int id, String description, double amount) {
+	public void updateExpense (int id, String description, double amount, String category) {
 		for (Expense expense : listExpenses) {
 			if (expense.getId() == id) {
 				expense.setDescription(description);
 				expense.setAmount(amount);
 				expense.setModifiedAt(LocalDateTime.now());
+				expense.setCategory(category);
 				System.out.println("Expense updated successfully (ID:" + expense.getId() + ")");
 				break;
 			}
 		}
 	}
 	
-	public void summaryByMonth(int month) {
-		if (month >= 1 && month <= 12) {
+	public void summaryByMonthAndByCategory(int month, String category) {
+		if (month > 0 && month <= 12 && category.trim().equals("")) {
 			double monthAccount = 0;
 			String monthDescription = getMonthDescription(month);
 			for (Expense expense : listExpenses) {
@@ -127,6 +128,24 @@ public class ExpenseTrackerController {
 			}
 			System.out.println("Total expenses for " + monthDescription + ": " + monthAccount + "€");
 			
+		} else if (month == 0 && !category.trim().equals("")) {
+			double categoryAccount = 0;
+			for (Expense expense : listExpenses) {
+				if (expense.getCategory().equals(category)) {
+					categoryAccount += expense.getAmount();
+				}
+			}
+			System.out.println("Total expenses for [" + category + "]: " + categoryAccount + "€");
+		} else if (month > 0 && month <= 12 && !category.trim().equals("")) {
+			double totalAccount = 0;
+			String monthDescription = getMonthDescription(month);
+			for (Expense expense : listExpenses) {
+				if (expense.getCategory().equals(category) &&
+						String.valueOf(expense.getCreatedAt().getMonth()).equals(monthDescription)) {
+					totalAccount += expense.getAmount();
+				}
+			}
+			System.out.println("Total expenses for [" + category + "] in the month of " + monthDescription + ": " + totalAccount + "€");
 		}
 		else {
 			System.out.println("ERROR: Month " + month + " does not exist.");
@@ -173,8 +192,9 @@ public class ExpenseTrackerController {
         String amountStr = json1[2].split(":")[1].strip();
         String createdAtStr = json1[3].split("[a-z]:")[1].strip();
         String modifiedAtStr = json1[4].split("[a-z]:")[1].strip();
+        String category = json1[5].split(":")[1].strip();
 
-        Expense expense = new Expense(Integer.valueOf(id), description, Double.valueOf(amountStr));
+        Expense expense = new Expense(Integer.valueOf(id), description, Double.valueOf(amountStr), category);
   
         expense.setCreatedAt(LocalDateTime.parse(createdAtStr, formatter));
         expense.setModifiedAt(LocalDateTime.parse(modifiedAtStr, formatter));
@@ -185,6 +205,7 @@ public class ExpenseTrackerController {
 	
 	public String expenseToJSON(Expense expense) {
         return "{\"id\":\"" + expense.getId() + "\", \"description\":\"" + expense.getDescription().strip() + "\", \"amount\":\"" + String.valueOf(expense.getAmount()) +
-                "\", \"createdAt\":\"" + expense.getCreatedAt().format(formatter) + "\", \"modifiedAt\":\"" + expense.getModifiedAt().format(formatter) + "\"}";
+                "\", \"createdAt\":\"" + expense.getCreatedAt().format(formatter) + "\", \"modifiedAt\":\"" + expense.getModifiedAt().format(formatter) + "\", \"category\":\"" + 
+        		expense.getCategory().strip() + "\"}";
     }
 }

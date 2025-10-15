@@ -1,16 +1,6 @@
 [
-	{
-		"id" : "1",
-		"description" : "TV",
-		"amount" : "289.99",
-		"createdAt":"2025-08-19T17:12:24.510706",
-		"modifiedAt":"2025-08-19T17:12:24.510706"
-	},
-	{
-		"id" : "2",
-		"description" : "Table",
-		"amount" : "179.50",
-		"createdAt":"2025-08-27T17:12:24.510706",
-		"modifiedAt":"2025-08-27T17:12:24.510706"
-	}
+{"id":"1", "description":"TV", "amount":"289.99", "createdAt":"2025-08-19T17:12:24.510706", "modifiedAt":"2025-08-19T17:12:24.510706", "category":"item"},
+{"id":"2", "description":"restaurant", "amount":"100.37", "createdAt":"2025-08-27T17:12:24.510706", "modifiedAt":"2025-10-14T17:50:10.637365417", "category":"food"},
+{"id":"3", "description":"notebook", "amount":"23.24", "createdAt":"2025-10-14T17:49:10.339819942", "modifiedAt":"2025-10-14T17:49:10.339847599", "category":"item"},
+{"id":"4", "description":"Sushi", "amount":"32.65", "createdAt":"2025-10-15T09:42:31.213368889", "modifiedAt":"2025-10-15T11:03:48.340736009", "category":"food"}
 ]

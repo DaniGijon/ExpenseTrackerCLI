@@ -10,13 +10,15 @@ public class Expense {
 	private double amount;
 	private LocalDateTime createdAt;
 	private LocalDateTime modifiedAt;
+	String category;
 	
-	public Expense (int id, String description, double amount) {
+	public Expense (int id, String description, double amount, String category) {
 		this.id = id;
 		this.description = description;
 		this.amount = amount;
 		createdAt = LocalDateTime.now();
 		modifiedAt = LocalDateTime.now();
+		this.category = category;
 	}
 	
 	public int getId() {
@@ -48,6 +50,12 @@ public class Expense {
 	}
 	public void setModifiedAt(LocalDateTime modifiedAt) {
 		this.modifiedAt = modifiedAt;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	
 }
