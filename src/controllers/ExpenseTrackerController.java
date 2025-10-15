@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import entities.Budget;
 import entities.Expense;
 
 public class ExpenseTrackerController {
@@ -16,6 +17,7 @@ public class ExpenseTrackerController {
 	private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 	
 	private int lastId = 0;
+	private double budget = 0;
 	private List<Expense> listExpenses = new ArrayList<>();
 	
 	public ExpenseTrackerController () {
@@ -70,13 +72,18 @@ public class ExpenseTrackerController {
 		}
 	}
 	
-	public void addExpense (String description, double amount, String category) {
+	public void addExpense (String description, double amount, String category, Budget budget) {
+		double alreadySpent = getAlreadySpent();
 		Expense expense = new Expense (++lastId, description, amount, category);
 		listExpenses.add(expense);
 		System.out.println("New expense added (ID:" + expense.getId() + ")");
+		if (amount + alreadySpent > budget.getLimitYear()) {
+			System.out.println("WARNING. You are exceeding the budget.");
+		}
 	}
 	
-	public void list () {
+	public void list (Budget budget) {
+		System.out.println("Budget limit: " + budget.getLimitYear());
 		for (Expense expense : listExpenses) {
 			System.out.println("(ID:" + expense.getId() + ") - " + expense.getDescription() + " [" + expense.getCategory() + "] costs " +
 					expense.getAmount() + " €. Created at " + expense.getCreatedAt() + 
@@ -104,17 +111,23 @@ public class ExpenseTrackerController {
 		}
 	}
 	
-	public void updateExpense (int id, String description, double amount, String category) {
+	public void updateExpense (int id, String description, double amount, String category, Budget budget) {
+		
 		for (Expense expense : listExpenses) {
 			if (expense.getId() == id) {
+				double alreadySpent = getAlreadySpent();
+				if (amount + alreadySpent - expense.getAmount() > budget.getLimitYear()) {
+					System.out.println("WARNING. You are exceeding the budget.");
+				}
 				expense.setDescription(description);
 				expense.setAmount(amount);
 				expense.setModifiedAt(LocalDateTime.now());
 				expense.setCategory(category);
 				System.out.println("Expense updated successfully (ID:" + expense.getId() + ")");
+				
 				break;
 			}
-		}
+		}	
 	}
 	
 	public void summaryByMonthAndByCategory(int month, String category) {
@@ -150,6 +163,11 @@ public class ExpenseTrackerController {
 		else {
 			System.out.println("ERROR: Month " + month + " does not exist.");
 		}
+	}
+	
+	public void setBudget (int month, double newLimit, Budget budget) {
+		budget.setLimitYear(newLimit);;
+		System.out.println ("Budget limit updated: " + budget.getLimitYear());
 	}
 	
 	private String getMonthDescription (int month) {
@@ -208,4 +226,12 @@ public class ExpenseTrackerController {
                 "\", \"createdAt\":\"" + expense.getCreatedAt().format(formatter) + "\", \"modifiedAt\":\"" + expense.getModifiedAt().format(formatter) + "\", \"category\":\"" + 
         		expense.getCategory().strip() + "\"}";
     }
+	
+	private double getAlreadySpent () {
+		double alreadySpent = 0;
+		for (Expense expense : listExpenses) {
+			alreadySpent += expense.getAmount();
+		}
+		return alreadySpent;
+	}
 }

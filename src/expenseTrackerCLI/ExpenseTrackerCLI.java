@@ -3,10 +3,12 @@ package expenseTrackerCLI;
 import java.util.Scanner;
 
 import controllers.ExpenseTrackerController;
+import entities.Budget;
 
 public class ExpenseTrackerCLI {
 	
 	private static ExpenseTrackerController etc = new ExpenseTrackerController();
+	private static Budget budget = new Budget();
 	
 	public static void main (String args []) {
 		Scanner scanner = new Scanner(System.in); 
@@ -36,7 +38,7 @@ public class ExpenseTrackerCLI {
 			    					category = arguments [i+1];
 			    				}
 			    			}
-			    			etc.addExpense(description, Double.valueOf(amount), category);
+			    			etc.addExpense(description, Double.valueOf(amount), category, budget);
 		    			}
 		    			break;
 		    		case "delete":
@@ -70,11 +72,11 @@ public class ExpenseTrackerCLI {
 			    					category = arguments [i+1];
 			    				}
 			    			}
-			    			etc.updateExpense(id, description, amount, category);
+			    			etc.updateExpense(id, description, amount, category, budget);
 		    			}
 		    			break;
 		    		case "list":
-		    			etc.list();
+		    			etc.list(budget);
 		    			break;
 		    		case "summary":
 		    			if (arguments.length > 1) {
@@ -93,6 +95,24 @@ public class ExpenseTrackerCLI {
 		    				etc.summary();
 		    			}
 		    			break;
+		    		case "budget":
+		    			if (arguments.length > 1) {
+		    				int month = 0;
+		    				double newLimit = 0;
+		    				for (int i = 1; i < arguments.length - 1; i++) {
+		    					if (arguments[i].equals("--limit")) {
+		    						newLimit = Double.valueOf(arguments [i+1]);
+			    				}
+		    					if (arguments[i].equals("--month")) {
+		    						month = Integer.valueOf(arguments [i+1]);
+			    				}
+		    				}
+		    				etc.setBudget(month, newLimit, budget);
+		    			}
+		    			break;
+		    		default:
+		    			System.out.println("ERROR. Invalid command.");
+		    			break;		    				
 			    }
 		    etc.saveExpenses();
 		    }
