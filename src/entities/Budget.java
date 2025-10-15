@@ -1,7 +1,6 @@
 package entities;
 
 public class Budget {
-	private double limitYear;
 	private double limitJanuary;
 	private double limitFebruary;
 	private double limitMarch;
@@ -17,14 +16,6 @@ public class Budget {
 	
 	public Budget() {
 		
-	}
-
-	public double getLimitYear() {
-		return limitYear;
-	}
-
-	public void setLimitYear(double limitYear) {
-		this.limitYear = limitYear;
 	}
 
 	public double getLimitJanuary() {

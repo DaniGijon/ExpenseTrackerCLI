@@ -17,7 +17,6 @@ public class ExpenseTrackerController {
 	private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 	
 	private int lastId = 0;
-	private double budget = 0;
 	private List<Expense> listExpenses = new ArrayList<>();
 	
 	public ExpenseTrackerController () {
@@ -73,17 +72,76 @@ public class ExpenseTrackerController {
 	}
 	
 	public void addExpense (String description, double amount, String category, Budget budget) {
-		double alreadySpent = getAlreadySpent();
+		double alreadySpent = getAlreadySpent(LocalDateTime.now().getMonthValue());
 		Expense expense = new Expense (++lastId, description, amount, category);
 		listExpenses.add(expense);
 		System.out.println("New expense added (ID:" + expense.getId() + ")");
-		if (amount + alreadySpent > budget.getLimitYear()) {
-			System.out.println("WARNING. You are exceeding the budget.");
+		
+		switch (LocalDateTime.now().getMonthValue()) {
+			case 1: 
+				if (amount + alreadySpent > budget.getLimitJanuary()) {
+					System.out.println("WARNING. You are exceeding the January budget [" + budget.getLimitJanuary() + "].");
+				}
+				break;
+			case 2: 
+				if (amount + alreadySpent > budget.getLimitFebruary()) {
+					System.out.println("WARNING. You are exceeding the February budget [" + budget.getLimitFebruary() + "].");
+				}
+				break;
+			case 3: 
+				if (amount + alreadySpent > budget.getLimitMarch()) {
+					System.out.println("WARNING. You are exceeding the March budget [" + budget.getLimitMarch() + "].");
+				}
+				break;
+			case 4: 
+				if (amount + alreadySpent > budget.getLimitApril()) {
+					System.out.println("WARNING. You are exceeding the April budget [" + budget.getLimitApril() + "].");
+				}
+				break;
+			case 5: 
+				if (amount + alreadySpent > budget.getLimitMay()) {
+					System.out.println("WARNING. You are exceeding the May budget [" + budget.getLimitMay() + "].");
+				}
+				break;
+			case 6: 
+				if (amount + alreadySpent > budget.getLimitJune()) {
+					System.out.println("WARNING. You are exceeding the June budget [" + budget.getLimitJune() + "].");
+				}
+				break;
+			case 7: 
+				if (amount + alreadySpent > budget.getLimitJuly()) {
+					System.out.println("WARNING. You are exceeding the July budget [" + budget.getLimitJuly() + "].");
+				}
+				break;
+			case 8: 
+				if (amount + alreadySpent > budget.getLimitAugust()) {
+					System.out.println("WARNING. You are exceeding the August budget [" + budget.getLimitAugust() + "].");
+				}
+				break;
+			case 9: 
+				if (amount + alreadySpent > budget.getLimitSeptember()) {
+					System.out.println("WARNING. You are exceeding the September budget [" + budget.getLimitSeptember() + "].");
+				}
+				break;
+			case 10: 
+				if (amount + alreadySpent > budget.getLimitOctober()) {
+					System.out.println("WARNING. You are exceeding the October budget [" + budget.getLimitOctober() + "].");
+				}
+				break;
+			case 11: 
+				if (amount + alreadySpent > budget.getLimitNovember()) {
+					System.out.println("WARNING. You are exceeding the November budget [" + budget.getLimitNovember() + "].");
+				}
+				break;
+			case 12: 
+				if (amount + alreadySpent > budget.getLimitDecember()) {
+					System.out.println("WARNING. You are exceeding the December budget [" + budget.getLimitDecember() + "].");
+				}
+				break;
 		}
 	}
 	
 	public void list (Budget budget) {
-		System.out.println("Budget limit: " + budget.getLimitYear());
 		for (Expense expense : listExpenses) {
 			System.out.println("(ID:" + expense.getId() + ") - " + expense.getDescription() + " [" + expense.getCategory() + "] costs " +
 					expense.getAmount() + " €. Created at " + expense.getCreatedAt() + 
@@ -115,10 +173,70 @@ public class ExpenseTrackerController {
 		
 		for (Expense expense : listExpenses) {
 			if (expense.getId() == id) {
-				double alreadySpent = getAlreadySpent();
-				if (amount + alreadySpent - expense.getAmount() > budget.getLimitYear()) {
-					System.out.println("WARNING. You are exceeding the budget.");
+				double alreadySpent = getAlreadySpent(LocalDateTime.now().getMonthValue());
+				switch (LocalDateTime.now().getMonthValue()) {
+					case 1: 
+						if (amount + alreadySpent - expense.getAmount() > budget.getLimitJanuary()) {
+							System.out.println("WARNING. You are exceeding the January budget.");
+						}
+						break;
+					case 2: 
+						if (amount + alreadySpent - expense.getAmount() > budget.getLimitFebruary()) {
+							System.out.println("WARNING. You are exceeding the February budget.");
+						}
+						break;
+					case 3: 
+						if (amount + alreadySpent - expense.getAmount() > budget.getLimitMarch()) {
+							System.out.println("WARNING. You are exceeding the March budget.");
+						}
+						break;
+					case 4: 
+						if (amount + alreadySpent - expense.getAmount() > budget.getLimitApril()) {
+							System.out.println("WARNING. You are exceeding the April budget.");
+						}
+						break;
+					case 5: 
+						if (amount + alreadySpent - expense.getAmount() > budget.getLimitMay()) {
+							System.out.println("WARNING. You are exceeding the May budget.");
+						}
+						break;
+					case 6: 
+						if (amount + alreadySpent - expense.getAmount() > budget.getLimitJune()) {
+							System.out.println("WARNING. You are exceeding the June budget.");
+						}
+						break;
+					case 7: 
+						if (amount + alreadySpent - expense.getAmount() > budget.getLimitJuly()) {
+							System.out.println("WARNING. You are exceeding the July budget.");
+						}
+						break;
+					case 8: 
+						if (amount + alreadySpent - expense.getAmount() > budget.getLimitAugust()) {
+							System.out.println("WARNING. You are exceeding the August budget.");
+						}
+						break;
+					case 9: 
+						if (amount + alreadySpent - expense.getAmount() > budget.getLimitSeptember()) {
+							System.out.println("WARNING. You are exceeding the September budget.");
+						}
+						break;
+					case 10: 
+						if (amount + alreadySpent - expense.getAmount() > budget.getLimitOctober()) {
+							System.out.println("WARNING. You are exceeding the October budget.");
+						}
+						break;
+					case 11: 
+						if (amount + alreadySpent - expense.getAmount() > budget.getLimitNovember()) {
+							System.out.println("WARNING. You are exceeding the November budget.");
+						}
+						break;
+					case 12: 
+						if (amount + alreadySpent - expense.getAmount() > budget.getLimitDecember()) {
+							System.out.println("WARNING. You are exceeding the December budget.");
+						}
+						break;
 				}
+				
 				expense.setDescription(description);
 				expense.setAmount(amount);
 				expense.setModifiedAt(LocalDateTime.now());
@@ -166,8 +284,49 @@ public class ExpenseTrackerController {
 	}
 	
 	public void setBudget (int month, double newLimit, Budget budget) {
-		budget.setLimitYear(newLimit);;
-		System.out.println ("Budget limit updated: " + budget.getLimitYear());
+		if (month > 0 && month <= 12) {
+			switch (month) {
+				case 1: 
+					budget.setLimitJanuary(newLimit);
+					break;
+				case 2: 
+					budget.setLimitFebruary(newLimit);
+					break;
+				case 3: 
+					budget.setLimitMarch(newLimit);
+					break;
+				case 4: 
+					budget.setLimitApril(newLimit);
+					break;
+				case 5: 
+					budget.setLimitMay(newLimit);
+					break;
+				case 6: 
+					budget.setLimitJune(newLimit);
+					break;
+				case 7: 
+					budget.setLimitJuly(newLimit);
+					break;
+				case 8: 
+					budget.setLimitAugust(newLimit);
+					break;
+				case 9: 
+					budget.setLimitSeptember(newLimit);
+					break;
+				case 10: 
+					budget.setLimitOctober(newLimit);
+					break;
+				case 11: 
+					budget.setLimitNovember(newLimit);
+					break;
+				case 12: 
+					budget.setLimitDecember(newLimit);
+					break;
+			}
+			System.out.println ("Budget limit for " + getMonthDescription(month) + " updated: " + newLimit);
+		} else {
+			System.out.println("ERROR. Month must be a value between 1 to 12.");
+		}
 	}
 	
 	private String getMonthDescription (int month) {
@@ -227,11 +386,13 @@ public class ExpenseTrackerController {
         		expense.getCategory().strip() + "\"}";
     }
 	
-	private double getAlreadySpent () {
+	private double getAlreadySpent (int month) {
 		double alreadySpent = 0;
 		for (Expense expense : listExpenses) {
-			alreadySpent += expense.getAmount();
-		}
+			if (expense.getCreatedAt().getMonthValue() == month) {
+				alreadySpent += expense.getAmount();
+			}
+		}	
 		return alreadySpent;
 	}
 }
