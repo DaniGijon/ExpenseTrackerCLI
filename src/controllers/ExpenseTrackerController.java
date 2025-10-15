@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -79,7 +80,7 @@ public class ExpenseTrackerController {
 		checkMonthBudgetExceed(amount, alreadySpent, budget, 0, LocalDateTime.now().getMonthValue());
 	}
 	
-	public void list (Budget budget) {
+	public void list () {
 		for (Expense expense : listExpenses) {
 			System.out.println("(ID:" + expense.getId() + ") - " + expense.getDescription() + " [" + expense.getCategory() + "] costs " +
 					expense.getAmount() + " €. Created at " + expense.getCreatedAt() + 
@@ -204,6 +205,48 @@ public class ExpenseTrackerController {
 		} else {
 			System.out.println("ERROR. Month must be a value between 1 to 12.");
 		}
+	}
+	
+	public void export (String filename) {
+		try {
+	        FileWriter writer = new FileWriter(filename + ".csv");
+
+	        writer.append("ID");
+	        writer.append(',');
+	        writer.append("Description");
+	        writer.append(',');
+	        writer.append("Amount");
+	        writer.append(',');
+	        writer.append("Category");
+	        writer.append(',');
+	        writer.append("CreatedAt");
+	        writer.append(',');
+	        writer.append("ModifiedAt");
+	        writer.append('\n');
+
+	        for (Expense expense : listExpenses) {
+	        	writer.append(String.valueOf(expense.getId()));
+		        writer.append(',');
+		        writer.append(expense.getDescription());
+		        writer.append(',');
+		        writer.append(String.valueOf(expense.getAmount()));
+		        writer.append(',');
+		        writer.append(expense.getCategory());
+		        writer.append(',');
+		        writer.append(expense.getCreatedAt().format(formatter));
+		        writer.append(',');
+		        writer.append(expense.getModifiedAt().format(formatter));
+		        writer.append('\n');
+	        }
+	        
+	        writer.flush();
+	        writer.close();
+	    }
+		
+	    catch(IOException e)
+	    {
+	         e.printStackTrace();
+	    } 
 	}
 	
 	private String getMonthDescription (int month) {

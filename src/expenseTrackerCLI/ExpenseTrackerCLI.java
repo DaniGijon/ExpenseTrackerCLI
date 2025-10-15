@@ -76,7 +76,7 @@ public class ExpenseTrackerCLI {
 		    			}
 		    			break;
 		    		case "list":
-		    			etc.list(budget);
+		    			etc.list();
 		    			break;
 		    		case "summary":
 		    			if (arguments.length > 1) {
@@ -110,6 +110,14 @@ public class ExpenseTrackerCLI {
 		    				etc.setBudget(month, newLimit, budget);
 		    			}
 		    			break;
+		    			
+		    		case "export":
+		    			if (arguments.length > 1) {
+		    				String filename = arguments[1];
+		    				etc.export(filename);
+		    			}
+		    			break;
+		    			
 		    		default:
 		    			System.out.println("ERROR. Invalid command.");
 		    			break;		    				
